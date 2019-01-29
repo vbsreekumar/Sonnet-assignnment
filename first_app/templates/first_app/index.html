@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sonnet Application</title>
+    <style>
+      .container{
+        width:100%;
+      }
+
+      .l{
+        float:left;
+        width:30%;
+        height:100%;
+        border:2px dotted grey;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+
+      <div class="l">
+        <h1>Sonnet Keyword Tagging</h1>
+        <p>This helps to tag each word in a sonnet with a keyword(important or frequent).</p>
+        <form class="" action="/keyword/" method="post" style="width:100%">
+          {% csrf_token %}
+          <input type="text" name="sn1" placeholder="Enter Sonnet Number">
+          <button type="submit">Generate Keywords</button>
+        </form>
+
+
+        {% if res1 %}
+          {% for i,j in res1.items %}
+          <table border="0px" width="300px">
+            <tr>
+              <td>{{i}} : {{j}}</td>
+            </tr>
+          </table>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+
+      <div class="l">
+
+        <h1>Sonnet Recommendation</h1>
+        <p>This gives the 3 recommendations out of all the recommendations.</p>
+        <form class="" action="/recommend/" method="post">
+          {% csrf_token %}
+          <input type="text" name="sn2" placeholder="Enter Sonnet Number">
+          <button type="submit">Recommend</button>
+        </form>
+
+
+        {% if res2 %}
+          <table border="0px" width="300px">
+            <tr>
+              {% for i in res2 %}
+                <td><a href="{% url 'display' %}?i={{i}}">{{i}}</a></td>
+              {% endfor %}
+            </tr>
+          </table>
+        {% endif %}
+
+      </div>
+
+      <div class="l">
+
+        <h1>Sonnet Relations</h1>
+        <p>This gives the relation between the input sonnet and every other sonnet.</p>
+        <form class="" action="/relate/" method="post">
+          {% csrf_token %}
+          <input type="text" name="sn3" placeholder="Enter Sonnet Number">
+          <button type="submit">Generate Relations</button>
+        </form>
+
+          <table border="0px">
+
+            {% if res3 %}
+            {% for i,j in res3 %}
+            <tr>
+              <form class="" action="/display/" method="post">
+                {% csrf_token %}
+                <td><a href="{% url 'display' %}?i={{i}}">{{i}}</a> : {{j}}</td>
+              </form>
+            </tr>
+            {% endfor %}
+          {% endif %}
+          </table>
+      </div>
+    </div>
+  </body>
+</html>
